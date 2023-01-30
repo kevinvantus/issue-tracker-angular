@@ -9,6 +9,7 @@ import { IssuesService } from '../issues.service';
 })
 export class IssueListComponent {
   showReportIssue = false;
+  selectedIssue: Issue | null = null;
   issues: Issue[] = [];
 
   constructor(private issueService: IssuesService) {}
@@ -24,5 +25,13 @@ export class IssueListComponent {
   onCloseReport() {
     this.showReportIssue = false;
     this.getIssues();
+  }
+
+  onConfirm(confirmed: boolean) {
+    if (confirmed && this.selectedIssue) {
+      this.issueService.completeIssue(this.selectedIssue);
+      this.getIssues();
+    }
+    this.selectedIssue = null;
   }
 }
